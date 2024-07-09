@@ -1,6 +1,13 @@
 #!/usr/bin/env bash
 set -e
 
+# Setup for dev
+export MOODLE_DOCKER_WWWROOT="/root/gdrive/moodle"
+export MOODLE_DOCKER_DB="mysql"
+export MOODLE_DOCKER_DBTYPE="mysqli"
+export MOODLE_DOCKER_DBCOLLATION="utf8mb4_bin"
+#export MOODLE_DOCKER_WEB_PORT=8085
+
 # First find out if this was called from symlink,
 # then find the real path of parent directory.
 # This is needed because macOS does not have GNU realpath.
@@ -36,33 +43,33 @@ dockercompose="${dockercompose} -f ${basedir}/service.mail.yml"
 export MOODLE_DOCKER_PHP_VERSION=${MOODLE_DOCKER_PHP_VERSION:-8.1}
 
 # Database flavour.
-dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
+#dockercompose="${dockercompose} -f ${basedir}/db.${MOODLE_DOCKER_DB}.yml"
 
 # Add support for version specific database settings.
-if [ ! -z "$MOODLE_DOCKER_DB_VERSION" ];
-then
-    filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_DB_VERSION}.yml"
-    if [ -f $filename ]; then
-        dockercompose="${dockercompose} -f ${filename}"
-    fi
-fi
+#if [ ! -z "$MOODLE_DOCKER_DB_VERSION" ];
+#then
+#    filename="${basedir}/db.${MOODLE_DOCKER_DB}.${MOODLE_DOCKER_DB_VERSION}.yml"
+#    if [ -f $filename ]; then
+#        dockercompose="${dockercompose} -f ${filename}"
+#    fi
+#fi
 
 # Support PHP version overrides for DB not available any more.
 
 # Expose DB port if requested.
-if [[ $MOODLE_DOCKER_DB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_DB_PORT -gt 0 ]]
-then
-    # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
-    if [[ ! $MOODLE_DOCKER_DB_PORT == *":"* ]]
-    then
-        export MOODLE_DOCKER_DB_PORT=127.0.0.1:$MOODLE_DOCKER_DB_PORT
-    fi
-    filename="${basedir}/db.${MOODLE_DOCKER_DB}.port.yml"
-    if [ -f $filename ];
-    then
-        dockercompose="${dockercompose} -f ${filename}"
-    fi
-fi
+#if [[ $MOODLE_DOCKER_DB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_DB_PORT -gt 0 ]]
+#then
+#    # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
+#    if [[ ! $MOODLE_DOCKER_DB_PORT == *":"* ]]
+#    then
+#        export MOODLE_DOCKER_DB_PORT=127.0.0.1:$MOODLE_DOCKER_DB_PORT
+#    fi
+#    filename="${basedir}/db.${MOODLE_DOCKER_DB}.port.yml"
+#    if [ -f $filename ];
+#    then
+#        dockercompose="${dockercompose} -f ${filename}"
+#    fi
+#fi
 
 # Guess mobile app runtime
 if [ -z "$MOODLE_DOCKER_APP_RUNTIME" ];
@@ -218,16 +225,16 @@ fi
 export MOODLE_DOCKER_WEB_HOST=${MOODLE_DOCKER_WEB_HOST:-localhost}
 
 # Webserver port
-export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
-if [[ $MOODLE_DOCKER_WEB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
-then
-    # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
-    if [[ ! $MOODLE_DOCKER_WEB_PORT == *":"* ]]
-    then
-        MOODLE_DOCKER_WEB_PORT=127.0.0.1:$MOODLE_DOCKER_WEB_PORT
-    fi
-    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
-fi
+#export MOODLE_DOCKER_WEB_PORT=${MOODLE_DOCKER_WEB_PORT:-8000}
+#if [[ $MOODLE_DOCKER_WEB_PORT == *":"* ]] || [[ $MOODLE_DOCKER_WEB_PORT -gt 0 ]]
+#then
+#    # If no bind ip has been configured (bind_ip:port), default to 127.0.0.1
+#    if [[ ! $MOODLE_DOCKER_WEB_PORT == *":"* ]]
+#    then
+#        MOODLE_DOCKER_WEB_PORT=127.0.0.1:$MOODLE_DOCKER_WEB_PORT
+#    fi
+#    dockercompose="${dockercompose} -f ${basedir}/webserver.port.yml"
+#fi
 
 # Behat test timeout factor
 export MOODLE_DOCKER_TIMEOUT_FACTOR=${MOODLE_DOCKER_TIMEOUT_FACTOR:-1}

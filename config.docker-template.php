@@ -6,7 +6,7 @@ $CFG = new stdClass();
 
 $CFG->dbtype    = getenv('MOODLE_DOCKER_DBTYPE');
 $CFG->dblibrary = 'native';
-$CFG->dbhost    = 'db';
+$CFG->dbhost    = 'mysql-db';
 $CFG->dbname    = getenv('MOODLE_DOCKER_DBNAME');
 $CFG->dbuser    = getenv('MOODLE_DOCKER_DBUSER');
 $CFG->dbpass    = getenv('MOODLE_DOCKER_DBPASS');

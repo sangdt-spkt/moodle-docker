@@ -9,11 +9,13 @@ services:
     environment:
       MOODLE_DOCKER_RUNNING: 1
       MOODLE_DOCKER_DBNAME: moodle
-      MOODLE_DOCKER_DBUSER: moodle
-      MOODLE_DOCKER_DBPASS: "m@0dl3ing"
+      MOODLE_DOCKER_DBUSER: samurai
+      MOODLE_DOCKER_DBPASS: "123456"
       MOODLE_DOCKER_BROWSER: firefox
       MOODLE_DOCKER_WEB_HOST: "${MOODLE_DOCKER_WEB_HOST}"
       MOODLE_DOCKER_TIMEOUT_FACTOR: "${MOODLE_DOCKER_TIMEOUT_FACTOR}"
+    networks:
+      - samurai_network_01
   exttests:
     image: moodlehq/moodle-exttests
     volumes:
@@ -23,3 +25,7 @@ services:
     image: "selenium/standalone-firefox${MOODLE_DOCKER_SELENIUM_SUFFIX:-}:${MOODLE_DOCKER_BROWSER_TAG}"
     volumes:
       - "${MOODLE_DOCKER_WWWROOT}:/var/www/html:ro"
+
+networks:
+  samurai_network_01:
+    external: true # Use existing network
