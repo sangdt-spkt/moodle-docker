@@ -1,0 +1,27 @@
+services:
+  webserver:
+    image: "moodlehq/moodle-php-apache:${MOODLE_DOCKER_PHP_VERSION}"
+    #    depends_on:
+    #      - db
+    volumes:
+      - "${MOODLE_DOCKER_WWWROOT}:/var/www/html"
+      - "${ASSETDIR}/web/apache2_faildumps.conf:/etc/apache2/conf-enabled/apache2_faildumps.conf"
+    environment:
+      MOODLE_DOCKER_RUNNING: 1
+      MOODLE_DOCKER_DBNAME: moodle
+      MOODLE_DOCKER_DBUSER: samurai
+      MOODLE_DOCKER_DBPASS: "123456"
+      MOODLE_DOCKER_BROWSER: firefox
+      MOODLE_DOCKER_WEB_HOST: "${MOODLE_DOCKER_WEB_HOST}"
+      MOODLE_DOCKER_TIMEOUT_FACTOR:
+      MYSQL_ROOT_PASSWORD: "123456"
+      MYSQL_USER: samurai
+      MYSQL_PASSWORD: "123456"
+      MYSQL_DATABASE: moodle
+      MOODLE_DOCKER_DB_PORT: mysql-db
+    networks:
+      - samurai_network_01
+
+networks:
+  samurai_network_01:
+    external: true # Use existing network
